@@ -30,3 +30,8 @@ def get_accuracy():
                 print("Ввод некорректен!")
         except ValueError:
             print("Ввод некорректен!")
+
+
+def print_matrix(matrix):
+    for row in matrix:
+        print(*row, sep = '\t')
