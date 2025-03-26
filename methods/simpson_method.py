@@ -11,8 +11,11 @@ class SimpsonMethod(IntegralComputingMethod):
         result = func(a) + func(b)
 
         for i in range(1, n):
-            coef = 3 + (-1) ** (i + 1)
-            result += coef * func(a + i * h)
+            try:
+                coef = 3 + (-1) ** (i + 1)
+                result += coef * func(a + i * h)
+            except:
+                pass
 
         result *= h / 3
         return result

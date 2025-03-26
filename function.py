@@ -22,7 +22,6 @@ def get_some_functions():
         Function(lambda x: math.sin(x), 'sin(x)'),
         Function(lambda x: -x, '-x'),
         Function(lambda x: 1 / x, '1 / x'),
-        Function(lambda x: math.exp(x), 'e^x'),
         Function(lambda x: 42, '42'),
         Function(lambda x: 1 / math.sqrt(x), '1 / sqrt(x)')
     ]

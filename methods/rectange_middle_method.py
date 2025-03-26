@@ -11,7 +11,10 @@ class RectangleMiddleMethod(IntegralComputingMethod):
         result = 0
 
         for i in range(n):
-            result += func(a + (i + 0.5) * h)
+            try:
+                result += func(a + (i + 0.5) * h)
+            except:
+                pass
 
         result *= h
         return result

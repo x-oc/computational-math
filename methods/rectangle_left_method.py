@@ -11,7 +11,10 @@ class RectangleLeftMethod(IntegralComputingMethod):
         result = 0
 
         for i in range(n):
-            result += func(a + i * h)
+            try:
+                result += func(a + i * h)
+            except:
+                pass
 
         result *= h
         return result

@@ -68,7 +68,8 @@ def get_convergence(function, breakpoints, eps):
     for bp in breakpoints:
         y1 = function.try_to_compute(bp - eps)
         y2 = function.try_to_compute(bp + eps)
-        if y1 is not None and y2 is not None and abs(y1 - y2) > eps or (y1 == y2 and y1 is not None):
+        if y1 is not None and y2 is not None and abs(y1 - y2) > eps and abs(y1 + y2) > eps:
+            print(y1, y2)
             return False
     return True
 
@@ -79,7 +80,7 @@ if __name__ == '__main__':
     a, b = get_integration_limit()
     breakpoints = get_break_points(function, a, b, math.ceil(b - a) * 1_000)
 
-    # Если есть разрыв: установить сходимость
+    # есть разрыв => установить сходимость
     if len(breakpoints) != 0:
         print(f"! Обнаружена точка разрыва: функция имеет разрыв или не существует в точках {breakpoints}.")
 
@@ -102,6 +103,9 @@ if __name__ == '__main__':
                         a += eps
                     elif b in breakpoints:
                         b -= eps
+                    result, n = compute_integral(function.func, a, b, epsilon, method)
+                    if result is not None and n is not None:
+                        print_result(result, n)
                 else:
                     res = 0
                     n = 0
@@ -129,12 +133,8 @@ if __name__ == '__main__':
 
                     print_result(res, n)
 
-                if not breakpoints or a - eps in breakpoints or b + eps in breakpoints:
-                    result, n = compute_integral(function.func, a, b, epsilon, method)
-                    if result is not None and n is not None:
-                        print_result(result, n)
     else:
-        # Если нет разрыва: просто вычисляем
+        # нет разрыва => просто вычисляем
         epsilon = get_epsilon()
 
         for method in METHODS:
