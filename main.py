@@ -74,14 +74,61 @@ def get_convergence(function, breakpoints, eps):
     return True
 
 
-if __name__ == '__main__':
+def process_method(method, function, a, b, epsilon):
+    print(method.name + ":")
+    result, n = compute_integral(function.func, a, b, epsilon, method)
+
+    if result is not None and n is not None:
+        print_result(result, n)
+
+
+def process_method_for_discontinuous_func(method, breakpoints, a, b, eps, function, epsilon):
+    print(method.name + ":")
+
+    if len(breakpoints) == 1:
+        if a in breakpoints:
+            a += eps
+        elif b in breakpoints:
+            b -= eps
+        result, n = compute_integral(function.func, a, b, epsilon, method)
+        if result is not None and n is not None:
+            print_result(result, n)
+    else:
+        res = 0
+        n = 0
+        if not (function.try_to_compute(a) is None or
+                function.try_to_compute(breakpoints[0] - eps) is None):
+            results = compute_integral(function.func, a, breakpoints[0] - eps, epsilon, method)
+            res += results[0]
+            n += results[1]
+
+        if not (function.try_to_compute(b) is None or
+                function.try_to_compute(breakpoints[0] + eps) is None):
+            results = compute_integral(function.func, breakpoints[0] + eps, b, epsilon, method)
+            res += results[0]
+            n += results[1]
+
+        for bi in range(len(breakpoints) - 1):
+            b_cur = breakpoints[bi]
+            b_next = breakpoints[bi + 1]
+
+            if not (function.try_to_compute(b_cur + eps) is None or
+                    function.try_to_compute(b_next - eps) is None):
+                results = compute_integral(function.func, b_cur + eps, b_next - eps, epsilon, method)
+                res += results[0]
+                n += results[1]
+
+        print_result(res, n)
+
+
+def main():
     functions = get_some_functions()
     function = get_function(functions)
     a, b = get_integration_limit()
     breakpoints = get_break_points(function, a, b, math.ceil(b - a) * 1_000)
 
-    # есть разрыв => установить сходимость
     if len(breakpoints) != 0:
+        # есть разрыв => установить сходимость
         print(f"! Обнаружена точка разрыва: функция имеет разрыв или не существует в точках {breakpoints}.")
 
         eps = 0.00001
@@ -96,50 +143,15 @@ if __name__ == '__main__':
             epsilon = get_epsilon()
 
             for method in METHODS:
-                print(method.name + ":")
-
-                if len(breakpoints) == 1:
-                    if a in breakpoints:
-                        a += eps
-                    elif b in breakpoints:
-                        b -= eps
-                    result, n = compute_integral(function.func, a, b, epsilon, method)
-                    if result is not None and n is not None:
-                        print_result(result, n)
-                else:
-                    res = 0
-                    n = 0
-                    if not (function.try_to_compute(a) is None or
-                            function.try_to_compute(breakpoints[0] - eps) is None):
-                        results = compute_integral(function.func, a, breakpoints[0] - eps, epsilon, method)
-                        res += results[0]
-                        n += results[1]
-
-                    if not (function.try_to_compute(b) is None or
-                            function.try_to_compute(breakpoints[0] + eps) is None):
-                        results = compute_integral(function.func, breakpoints[0] + eps, b, epsilon, method)
-                        res += results[0]
-                        n += results[1]
-
-                    for bi in range(len(breakpoints) - 1):
-                        b_cur = breakpoints[bi]
-                        b_next = breakpoints[bi + 1]
-
-                        if not (function.try_to_compute(b_cur + eps) is None or
-                                function.try_to_compute(b_next - eps) is None):
-                            results = compute_integral(function.func, b_cur + eps, b_next - eps, epsilon, method)
-                            res += results[0]
-                            n += results[1]
-
-                    print_result(res, n)
+                process_method_for_discontinuous_func(method, breakpoints, a, b, eps, function, epsilon)
 
     else:
         # нет разрыва => просто вычисляем
         epsilon = get_epsilon()
 
         for method in METHODS:
-            print(method.name + ":")
-            result, n = compute_integral(function.func, a, b, epsilon, method)
+            process_method(method, function, a, b, epsilon)
 
-            if result is not None and n is not None:
-                print_result(result, n)
+
+if __name__ == '__main__':
+    main()
