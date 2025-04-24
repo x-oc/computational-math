@@ -9,14 +9,14 @@ class LinearApproximation(AbstractApproximation):
     @staticmethod
     def get(xs, ys, n):
         sx = sum(xs)
-        sxx = sum(x ** 2 for x in xs)
+        sx2 = sum(x ** 2 for x in xs)
         sy = sum(ys)
         sxy = sum(x * y for x, y in zip(xs, ys))
 
         a, b = solve_sle(
             [
                 [n, sx],
-                [sx, sxx]
+                [sx, sx2]
             ],
             [sy, sxy], 2)
-        return lambda xi: a + b * xi, a, b
+        return lambda x: a + b * x, a, b

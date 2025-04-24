@@ -1,17 +1,16 @@
-def calc_det2(A):
+def get_det2(A):
     return A[0][0] * A[1][1] - A[0][1] * A[1][0]
+
 
 def solve2(A, B):
     n = 2
-    det = calc_det2(A)
-    det1 = calc_det2([[B[r], A[r][1]] for r in range(n)])
-    det2 = calc_det2([[A[r][0], B[r]] for r in range(n)])
-    x1 = det1 / det
-    x2 = det2 / det
-    return x1, x2
+    det = get_det2(A)
+    det1 = get_det2([[B[r], A[r][1]] for r in range(n)])
+    det2 = get_det2([[A[r][0], B[r]] for r in range(n)])
+    return det1 / det, det2 / det
 
 
-def calc_det3(A):
+def get_det3(A):
     pos = A[0][0] * A[1][1] * A[2][2] + \
           A[0][1] * A[1][2] * A[2][0] + \
           A[0][2] * A[1][0] * A[2][1]
@@ -20,19 +19,17 @@ def calc_det3(A):
           A[0][0] * A[1][2] * A[2][1]
     return pos - neg
 
+
 def solve3(A, B):
     n = 3
-    det = calc_det3(A)
-    det1 = calc_det3([[B[r], A[r][1], A[r][2]] for r in range(n)])
-    det2 = calc_det3([[A[r][0], B[r], A[r][2]] for r in range(n)])
-    det3 = calc_det3([[A[r][0], A[r][1], B[r]] for r in range(n)])
-    x1 = det1 / det
-    x2 = det2 / det
-    x3 = det3 / det
-    return x1, x2, x3
+    det = get_det3(A)
+    det1 = get_det3([[B[r], A[r][1], A[r][2]] for r in range(n)])
+    det2 = get_det3([[A[r][0], B[r], A[r][2]] for r in range(n)])
+    det3 = get_det3([[A[r][0], A[r][1], B[r]] for r in range(n)])
+    return det1 / det, det2 / det, det3 / det
 
 
-def calc_det4(A):
+def get_det4(A):
     n = 4
     sign = 1
     r = 0
@@ -40,22 +37,19 @@ def calc_det4(A):
     for c in range(n):
         A_ = [[A[r_][c_] for c_ in range(n) if c_ != c]
               for r_ in range(n) if r_ != r]
-        res += sign * A[r][c] * calc_det3(A_)
+        res += sign * A[r][c] * get_det3(A_)
         sign *= -1
     return res
 
+
 def solve4(A, B):
     n = 4
-    det = calc_det4(A)
-    det1 = calc_det4([[B[r], A[r][1], A[r][2], A[r][3]] for r in range(n)])
-    det2 = calc_det4([[A[r][0], B[r], A[r][2], A[r][3]] for r in range(n)])
-    det3 = calc_det4([[A[r][0], A[r][1], B[r], A[r][3]] for r in range(n)])
-    det4 = calc_det4([[A[r][0], A[r][1], A[r][2], B[r]] for r in range(n)])
-    x1 = det1 / det
-    x2 = det2 / det
-    x3 = det3 / det
-    x4 = det4 / det
-    return x1, x2, x3, x4
+    det = get_det4(A)
+    det1 = get_det4([[B[r], A[r][1], A[r][2], A[r][3]] for r in range(n)])
+    det2 = get_det4([[A[r][0], B[r], A[r][2], A[r][3]] for r in range(n)])
+    det3 = get_det4([[A[r][0], A[r][1], B[r], A[r][3]] for r in range(n)])
+    det4 = get_det4([[A[r][0], A[r][1], A[r][2], B[r]] for r in range(n)])
+    return det1 / det, det2 / det, det3 / det, det4 / det
 
 
 def solve_sle(A, B, n):

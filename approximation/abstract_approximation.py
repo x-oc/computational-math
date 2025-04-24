@@ -4,4 +4,4 @@ class AbstractApproximation:
 
     @staticmethod
     def get(xs, ys, n):
-        return lambda xi: 0, 0, 0
+        return lambda x: 0, 0, 0

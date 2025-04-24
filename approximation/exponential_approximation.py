@@ -12,4 +12,4 @@ class ExponentialApproximation(AbstractApproximation):
         ys_ = list(map(log, ys))
         _, a, b = LinearApproximation.get(xs, ys_, n)
         a = exp(a)
-        return lambda xi: a * exp(b * xi), a, b
+        return lambda x: a * exp(b * x), a, b

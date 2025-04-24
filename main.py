@@ -35,10 +35,10 @@ def get_coefficient_of_determination(xs, ys, fi, n):
 
 def get_str_presentation(func):
     str_func = inspect.getsourcelines(func)[0][0]
-    return str_func.split('lambda xi: ')[-1].split(',')[0].strip().replace('xi', 'x')
+    return str_func.split('lambda x: ')[-1].split(',')[0].strip()
 
 
-def get_coeffs_str(coeffs):
+def get_coefficients_str(coeffs):
     if len(coeffs) == 2:
         return '(a, b)'
     if len(coeffs) == 3:
@@ -92,6 +92,7 @@ def run(functions, x, y, n):
             s = get_measure_of_deviation(x, y, fi)
             mse = get_mean_squared_error(x, y, fi, n)
             r2 = get_coefficient_of_determination(x, y, fi, n)
+            r2_status = get_r2_status(r2)
 
             if mse <= best_mse:
                 best_mse = mse
@@ -101,9 +102,8 @@ def run(functions, x, y, n):
 
             print(f"{name} функция:")
             print(f"*  Функция: f(x) =", get_str_presentation(fi))
-            print(f"*  Коэффициенты {get_coeffs_str(coeffs)}: {list(map(lambda cf: round(cf, 4), coeffs))}")
+            print(f"*  Коэффициенты {get_coefficients_str(coeffs)}: {list(map(lambda cf: round(cf, 4), coeffs))}")
             print(f"*  Среднеквадратичное отклонение: σ = {mse:.5f}")
-            r2_status = get_r2_status(r2)
             print(f"*  Коэффициент детерминации: R^2 = {r2:.5f}, {r2_status}")
             print(f"*  Мера отклонения: S = {s:.5f}")
             if approximation == LinearApproximation.get:
@@ -116,8 +116,7 @@ def run(functions, x, y, n):
 
         print('\n' + ('-' * 40) + '\n')
 
-    print(f"Лучшая функция приближения: {best_func}")
-
+    print(f"Лучшая аппроксимирующая функция: {best_func}")
     draw_plot(x, y)
 
 
@@ -157,7 +156,7 @@ def main():
             ]
 
     with open('out.txt', 'w') as output:
-        option = input("Куда выводим? 'f'- файл, 't'- терминал: ")
+        option = input("Куда выводим? 'f' - файл, 't' - терминал: ")
         if option == 'f':
             print("Выбран вывод в файл 'out.txt'")
             sys.stdout = output

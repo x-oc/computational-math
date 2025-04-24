@@ -14,7 +14,7 @@ def read_data_from_file(filename):
         return None, None, "! Невозможно прочитать файл {0}: {1}".format(filename, err)
 
 
-def read_data_from_input():
+def read_data_from_console():
     str = ' '
     x = []
     y = []
@@ -26,13 +26,13 @@ def read_data_from_input():
             y.append(float(point[1]))
         else:
             if str:
-                print("! Неправильный ввод. Введенная точка не будет использована.")
+                print("! Некорректный ввод. Введенная точка не будет использована.")
     return x, y
 
 
 def get_x_y_n():
     while True:
-        option = input("Введите 'f' для ввода из файла или 't' для ввода с клавиатуры: ")
+        option = input("Откуда вводим? 'f' - из файла, 't' - из терминала: ")
         if option == 'f':
             while True:
                 filename = input("Введите имя файла: ")
@@ -46,7 +46,7 @@ def get_x_y_n():
             break
         elif option == 't':
             print("Чтобы закончить ввод, введите Enter")
-            x, y = read_data_from_input()
+            x, y = read_data_from_console()
             n = len(x)
             break
         else:

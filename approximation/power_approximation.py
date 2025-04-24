@@ -11,4 +11,4 @@ class PowerApproximation(AbstractApproximation):
     def get(xs, ys, n):
         _, a, b = LinearApproximation.get(list(map(log, xs)), list(map(log, ys)), n)
         a = exp(a)
-        return lambda xi: a * xi ** b, a, b
+        return lambda x: a * x ** b, a, b

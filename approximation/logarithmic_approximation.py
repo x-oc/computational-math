@@ -10,4 +10,4 @@ class LogarithmicApproximation(AbstractApproximation):
     @staticmethod
     def get(xs, ys, n):
         _, a, b = LinearApproximation.get(list(map(log, xs)), ys, n)
-        return lambda xi: a + b * log(xi), a, b
+        return lambda x: a + b * log(x), a, b
