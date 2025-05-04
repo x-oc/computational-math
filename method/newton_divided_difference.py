@@ -1,0 +1,24 @@
+from functools import reduce
+import numpy as np
+from method.interpolation_method import InterpolationMethod
+
+
+def divided_differences(x, y):
+    n = len(y)
+    coef = np.copy(y).astype(float)
+    for j in range(1, n):
+        for i in range(n - 1, j - 1, -1):
+            coef[i] = (coef[i] - coef[i - 1]) / (x[i] - x[i - j])
+    return coef
+
+
+class NewtonDividedDifference(InterpolationMethod):
+
+    def __init__(self):
+        super().__init__("Многочлен Ньютона с разделенными разностями")
+
+    def compute(self, xs, ys, n):
+        coef = divided_differences(xs, ys)
+        return lambda x: ys[0] + sum([
+            coef[k] * reduce(lambda a, b: a * b, [x - xs[j] for j in range(k)])
+            for k in range(1, n)])
