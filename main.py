@@ -67,4 +67,7 @@ def solve(f, x0, xn, n, y0, exact_y, eps):
 
 
 if __name__ == "__main__":
-    solve(*get_params())
+    try:
+        solve(*get_params())
+    except Exception as e:
+        print(e)
